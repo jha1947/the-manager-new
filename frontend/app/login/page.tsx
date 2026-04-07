@@ -13,7 +13,7 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
 
-  const handleLogin = async (e) => {
+
     e.preventDefault();
     setLoading(true);
     setMessage('');
