@@ -1,0 +1,17 @@
+{
+  "name": "The Manager - Housing Society PWA",
+  "short_name": "The Manager",
+  "description": "Full-stack housing society management PWA with role-based workflows, accounting, and reporting.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#F4F7FB",
+  "theme_color": "#1A1A2E",
+  "icons": [
+    {
+      "src": "/icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}
