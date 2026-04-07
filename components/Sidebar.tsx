@@ -24,7 +24,11 @@ const activeLinkColors: Record<RoleKey, string> = {
 
 const navLinks = [
   { label: "Dashboard", href: "/dashboard" },
-  { label: "Reports", href: "/reports" },
+  { label: "Announcements", href: "/dashboard/announcements" },
+  { label: "Events", href: "/dashboard/events" },
+  { label: "Complaints", href: "/dashboard/complaints" },
+  { label: "Wallet", href: "/dashboard/wallet" },
+  { label: "Analytics & Reports", href: "/dashboard/reports" },
   { label: "Haat Bazaar", href: "/dashboard/haat-bazaar" },
   { label: "Profile", href: "/dashboard/profile" }
 ];

@@ -15,3 +15,9 @@ export type DashboardCard = {
   value: string;
   description: string;
 };
+
+export type DashboardStats = {
+  cards: DashboardCard[];
+  recentActivity: any[];
+  alerts: any[];
+};

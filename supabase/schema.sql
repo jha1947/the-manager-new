@@ -329,3 +329,31 @@ create table if not exists haat_bazaar_categories (
   created_by uuid not null references users(id) on delete set null,
   created_at timestamp with time zone default now()
 );
+
+-- Events
+create table if not exists events (
+  id uuid primary key default gen_random_uuid(),
+  society_id uuid not null references societies(id) on delete cascade,
+  title text not null,
+  description text,
+  event_date date not null,
+  event_time time,
+  location text,
+  organizer_id uuid not null references users(id) on delete cascade,
+  category text not null check (category in ('social','maintenance','meeting','celebration','other')) default 'other',
+  max_attendees int,
+  is_cancelled boolean not null default false,
+  created_at timestamp with time zone default now(),
+  updated_at timestamp with time zone default now()
+);
+
+-- Event RSVPs
+create table if not exists event_rsvps (
+  id uuid primary key default gen_random_uuid(),
+  event_id uuid not null references events(id) on delete cascade,
+  user_id uuid not null references users(id) on delete cascade,
+  status text not null check (status in ('attending','maybe','declined')) default 'attending',
+  created_at timestamp with time zone default now(),
+  updated_at timestamp with time zone default now(),
+  unique(event_id, user_id)
+);

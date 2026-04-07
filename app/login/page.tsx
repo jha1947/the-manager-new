@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
+import { syncUserProfile } from "@/lib/userProfile";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -21,24 +22,34 @@ export default function LoginPage() {
       return;
     }
 
-    const { error } = await supabase.auth.signInWithOtp({
-      phone: mobile,
-      options: {
-        shouldCreateUser: true,
-        data: {
-          role: "resident"
+    try {
+      const { error } = await supabase.auth.signInWithOtp({
+        phone: mobile,
+        options: {
+          shouldCreateUser: true,
+          data: {
+            role: "resident"
+          }
         }
+      });
+
+      if (error) {
+        setMessage(error.message);
+      } else {
+        setMessage("OTP sent. Please check your mobile and verify the link.");
+        // Note: Profile sync will happen after OTP verification in the dashboard
+        router.push("/dashboard");
       }
-    });
-
-    if (error) {
-      setMessage(error.message);
-    } else {
-      setMessage("OTP sent. Please check your mobile and verify the link.");
-      router.push("/dashboard");
+    } catch (fetchError) {
+      console.error("Supabase OTP request failed", fetchError);
+      setMessage(
+        fetchError instanceof Error
+          ? fetchError.message
+          : "Failed to connect to Supabase. Check your Supabase URL and anon key."
+      );
+    } finally {
+      setLoading(false);
     }
-
-    setLoading(false);
   };
 
   return (
@@ -67,3 +78,4 @@ export default function LoginPage() {
     </main>
   );
 }
+

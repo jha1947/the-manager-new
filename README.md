@@ -40,7 +40,13 @@ npm run dev
 - `app/login/page.tsx` contains OTP sign-in flow using Supabase.
 - `app/dashboard/` contains starter dashboard pages for all roles.
 - `app/reports/page.tsx` provides a reports overview stub.
-- `tailwind.config.ts` includes role-based theme colors.
+- `middleware.ts` adds protection for dashboard and report routes.
+- `app/api/seed-platform-owner/route.ts` seeds the initial platform owner using the Supabase service role key.
+- `lib/supabaseServer.ts` provides a server-side Supabase client for elevated operations.
+- `lib/userProfile.ts` handles user profile sync between Supabase Auth and app-level users table.
+- `lib/dashboardData.ts` fetches role-based dashboard statistics and activity data.
+- `components/ProfileSync.tsx` automatically syncs user profiles on dashboard access.
+- `app/dashboard/profile/page.tsx` provides a functional profile management interface.
 
 ## Next steps
 

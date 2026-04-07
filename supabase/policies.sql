@@ -29,6 +29,8 @@ alter table if exists manager_tips enable row level security;
 alter table if exists personal_service_requests enable row level security;
 alter table if exists manager_daily_logs enable row level security;
 alter table if exists haat_bazaar_categories enable row level security;
+alter table if exists events enable row level security;
+alter table if exists event_rsvps enable row level security;
 
 -- Policy helpers
 create or replace function is_platform_owner() returns boolean stable language sql as $$
@@ -160,3 +162,17 @@ create policy if not exists "Manager daily logs access" on manager_daily_logs
 -- Haat Bazaar categories
 create policy if not exists "Haat bazaar categories access" on haat_bazaar_categories
   for all using (society_id = current_user_society());
+
+-- Events
+create policy if not exists "Events access for society members" on events
+  for select using (society_id = current_user_society());
+create policy if not exists "Admins and managers can create events" on events
+  for insert with check (society_id = current_user_society() and current_user_role() in ('platform_owner','admin','sub_admin','manager'));
+create policy if not exists "Event organizers and admins can update events" on events
+  for update using (society_id = current_user_society() and (organizer_id = current_user_id() or current_user_role() in ('platform_owner','admin','sub_admin')));
+
+-- Event RSVPs
+create policy if not exists "RSVP access for society members" on event_rsvps
+  for select using (exists (select 1 from events where events.id = event_id and events.society_id = current_user_society()));
+create policy if not exists "Users can manage own RSVPs" on event_rsvps
+  for all using (user_id = current_user_id() and exists (select 1 from events where events.id = event_id and events.society_id = current_user_society()));
