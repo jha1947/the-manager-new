@@ -22,6 +22,14 @@ export default function LoginPage() {
       return;
     }
 
+    // Validate phone number format (E.164)
+    const phoneRegex = /^\+\d{10,15}$/;
+    if (!phoneRegex.test(mobile)) {
+      setMessage("Please enter a valid phone number in E.164 format (e.g., +911234567890).");
+      setLoading(false);
+      return;
+    }
+
     try {
       const { error } = await supabase.auth.signInWithOtp({
         phone: mobile,
